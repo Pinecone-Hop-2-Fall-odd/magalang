@@ -2,18 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-.outer {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-direction: column;
-}
 body {
-  background-color: rgb(32, 32, 32);
   color: white;
   overflow: hidden;
+  background-image: url("./bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  user-select: none;
 }
 
 .cards {
@@ -25,7 +20,8 @@ body {
   width: 114px;
   background-repeat: no-repeat;
   background-size: cover;
-  transition: transform 0.8s;
+  transition: transform;
+  transition-duration: 0.5s;
   transform-style: preserve-3d;
 }
 .card_container {
@@ -34,17 +30,18 @@ body {
   display: flex;
   height: 450px;
   gap: 20px;
+  justify-content: center;
 }
 
 @media only screen and (max-width: 900px) {
   .card_container {
-    width: 80%;
+    width: 100%;
     justify-content: center;
     height: auto;
   }
   body {
-    background-color: rgb(32, 32, 32);
     color: white;
+    background-image: url(./bgMobile.jpg);
   }
   .cards {
     display: flex;

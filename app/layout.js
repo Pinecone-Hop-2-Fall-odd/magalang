@@ -1,7 +1,7 @@
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Poppins({ weight: "400", subsets: ["latin"], display: "swap" });
 
 export const metadata = {
   title: "Create Next App",
@@ -12,16 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap"
-          rel="stylesheet"
-        />
+        <link rel="preload" href="./images/blank.webp" as="image" />
       </head>
       <body className={inter.className}>{children}</body>
     </html>
