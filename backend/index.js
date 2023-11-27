@@ -27,15 +27,15 @@ app.get("/users", async (req, res) => {
   const userData = await userModel.find();
   res.status(200).json({ userData });
 });
-app.get("/user:username", async (req, res) => {
+
+app.get("/user/:username", async (req, res) => {
   const { username } = req.params;
   const userData = await userModel.find();
   const filt = userData.filter((element) => {
-    if (element.username === username) {
+    if (element.username == username) {
       return element;
     }
-    return "user not found";
   });
-  res.status(200).json({ filt });
+  res.json(filt);
 });
 app.listen(8080);
