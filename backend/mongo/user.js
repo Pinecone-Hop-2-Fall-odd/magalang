@@ -7,6 +7,12 @@ const UserSchema = new Schema({
   lastname: String,
 });
 
-const UserModel = model("users", UserSchema);
+const ScoreSchema = new Schema({
+  username: String,
+  highscore: String,
+});
 
-module.exports = UserModel;
+const UserModel = model("users", UserSchema);
+const ScoreModel = model("score", ScoreSchema);
+
+module.exports = { UserModel, ScoreModel };

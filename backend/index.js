@@ -18,19 +18,18 @@ app.post("/user", (req, res) => {
     firstname: body.firstname,
     lastname: body.lastname,
   };
-  userModel.create(model);
-
+  userModel.UserModel.create(model);
   res.status(200).json(model);
 });
 
 app.get("/users", async (req, res) => {
-  const userData = await userModel.find();
+  const userData = await userModel.UserModel.find();
   res.status(200).json({ userData });
 });
 
 app.get("/user/:username", async (req, res) => {
   const { username } = req.params;
-  const userData = await userModel.find();
+  const userData = await userModel.UserModel.find();
   const filt = userData.filter((element) => {
     if (element.username == username) {
       return element;
@@ -38,4 +37,19 @@ app.get("/user/:username", async (req, res) => {
   });
   res.json(filt);
 });
+
+app.get("/users/highscore", async (req, res) => {
+  const userData = await userModel.ScoreModel.find();
+  res.status(200).json({ userData });
+});
+
+app.post("/user/highscore", (req, res) => {
+  const model = {
+    username: req.body.username,
+    highscore: req.body.highscore,
+  };
+  userModel.ScoreModel.create(model);
+  res.json(model);
+});
+
 app.listen(8080);

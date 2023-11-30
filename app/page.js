@@ -80,9 +80,35 @@ export default function App() {
         solved: false,
       },
     ]);
-  });
+  }, []);
   return (
-    <div className="flex justify-center items-center h-[100vh] w-[100vw]">
+    <div className="flex justify-center items-center h-[100vh] w-[100vw] relative">
+      <button
+        style={
+          localStorage.getItem("sign")
+            ? { display: "none" }
+            : { display: "flex" }
+        }
+        onClick={() => {
+          router.push("/login");
+        }}
+        className="absolute top-[8px] right-[16px] text-[25px] flex h-[50px] w-[100px] justify-center backdrop-blur-lg rounded-lg bg-[#323232] items-center hover:bg-[#696969] transition-all duration-300"
+      >
+        <p>login</p>
+      </button>
+      <button
+        style={
+          localStorage.getItem("sign")
+            ? { display: "flex" }
+            : { display: "none" }
+        }
+        onClick={() => {
+          router.push("/account");
+        }}
+        className="absolute top-[8px] right-[16px] text-[25px] flex h-[50px] w-[100px] justify-center backdrop-blur-lg rounded-lg bg-[#323232] items-center hover:bg-[#696969] transition-all duration-300"
+      >
+        <p>{localStorage.getItem("sign")}</p>
+      </button>
       <div className="backdrop-blur h-[300px] w-[400px] flex justify-center items-center flex-col rounded-[10px] gap-[25px]">
         <h1 className="text-[30px]">select mode</h1>
         <div className="flex gap-[10px]">

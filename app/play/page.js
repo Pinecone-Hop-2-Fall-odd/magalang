@@ -126,6 +126,32 @@ export default function App() {
 
   return (
     <div className="h-[100vh] w-[100vw] flex flex-col items-center justify-center gap-[10px]">
+      <button
+        style={
+          localStorage.getItem("sign")
+            ? { display: "none" }
+            : { display: "flex" }
+        }
+        onClick={() => {
+          router.push("/login");
+        }}
+        className="absolute top-[8px] right-[16px] text-[25px] flex h-[50px] w-[100px] justify-center backdrop-blur-lg rounded-lg bg-[#323232] items-center hover:bg-[#696969] transition-all duration-300"
+      >
+        <p>login</p>
+      </button>
+      <button
+        style={
+          localStorage.getItem("sign")
+            ? { display: "flex" }
+            : { display: "none" }
+        }
+        onClick={() => {
+          router.push("/account");
+        }}
+        className="absolute top-[8px] right-[16px] text-[25px] flex h-[50px] w-[100px] justify-center backdrop-blur-lg rounded-lg bg-[#323232] items-center hover:bg-[#696969] transition-all duration-300"
+      >
+        <p>{localStorage.getItem("sign")}</p>
+      </button>
       <div className="p-[10px] flex flex-col h-[auto] w-[auto]  text-[white] gap-[10px] justify-center items-center backdrop-blur">
         <h2 className="text-[30px]">time: {displayTime}</h2>
         {mode == "hard" ? (
