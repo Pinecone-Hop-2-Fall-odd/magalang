@@ -43,13 +43,35 @@ app.get("/users/highscore", async (req, res) => {
   res.status(200).json({ userData });
 });
 
-app.post("/user/highscore", (req, res) => {
+app.post("/user/highscore", async (req, res) => {
   const model = {
     username: req.body.username,
     highscore: req.body.highscore,
   };
-  userModel.ScoreModel.create(model);
-  res.json(model);
+  const rawUserData = await userModel.ScoreModel.find();
+  const userData = rawUserData[0];
+
+  function hasDupe() {
+    if (userData.username === model.username) {
+      function muchHigherScore(num1, num2) {
+        if (num1 < num2) {
+          return num2;
+        } else {
+          return num1;
+        }
+      }
+      return {
+        username: userData.username,
+        highscore: muchHigherScore(userData.highscore, model.highscore),
+      };
+    } else {
+      return model;
+    }
+  }
+  await userModel.ScoreModel.deleteOne({ username: model.username });
+  await userModel.ScoreModel.create(hasDupe());
+
+  res.send(hasDupe());
 });
 
 app.listen(8080);

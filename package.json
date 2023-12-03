@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@kinde-oss/kinde-auth-react": "^3.0.23",
+    "cookies-next": "^4.1.0",
+    "create-next-app": "^14.0.3",
     "next": "14.0.3",
     "react": "^18",
     "react-cookie": "^6.1.1",

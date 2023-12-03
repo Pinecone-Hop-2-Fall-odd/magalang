@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { setCookie, getCookie } from "cookies-next";
 
 export default function App() {
   const [data, setData] = useState({});
   const router = useRouter();
   useEffect(() => {
-    if (localStorage.getItem("sign")) {
-      router.push("/play?username=" + localStorage.getItem("sign"));
+    if (getCookie("sign")) {
+      router.push("/play?username=" + getCookie("sign"));
     }
   }, []);
   function handleLastName(event) {
@@ -42,7 +43,7 @@ export default function App() {
       })
         .then((res) => res.json())
         .then((response) => console.log(response));
-      localStorage.setItem("sign", data.username);
+      setCookie("sign", data.username);
       router.push("/play?username=" + data.username);
     }
   }

@@ -4,20 +4,19 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import Image from "next/image";
+import { setCookie, getCookie } from "cookies-next";
 //function importln
 export default function App() {
   //usestates
 
   const router = useRouter();
   const [cookies, setCookies] = useCookies();
-  const params = useSearchParams();
-  const mode = params.get("mode");
-
   const [property, setProperty] = useState(shuffleArray(cookies.photo));
   const [click, setClick] = useState(1);
   const [fisrtClick, setFirstClick] = useState();
   const [moves, setMoves] = useState(0);
   const [displayTime, setDisplayTime] = useState(0);
+  const [sign, setSign] = useState();
   const [solvedCards, setSolvedCards] = useState(0);
 
   function shuffleArray(array) {
@@ -83,151 +82,97 @@ export default function App() {
 
   function pollDOM() {
     seconds++;
-    if (mode === "easy") {
-      if (seconds === 4) {
-        const updatedProperty = property.map((card) => {
-          return { ...card, clicked: false };
-        });
-        setProperty(updatedProperty);
-        let displayTime = 0;
-        function handleTimer() {
-          displayTime++;
-          setDisplayTime(displayTime);
-        }
-        const timer = setInterval(handleTimer, 1000);
+
+    if (seconds === 3) {
+      const updatedProperty = property.map((card) => {
+        return { ...card, clicked: false };
+      });
+      setProperty(updatedProperty);
+      let displayTime = 0;
+      function handleTimer() {
+        displayTime++;
+        setDisplayTime(displayTime);
       }
-    } else if (mode === "hard") {
-      if (seconds === 3) {
-        const updatedProperty = property.map((card) => {
-          return { ...card, clicked: false };
-        });
-        setProperty(updatedProperty);
-        let displayTime = 0;
-        function handleTimer() {
-          displayTime++;
-          setDisplayTime(displayTime);
-        }
-        const timer = setInterval(handleTimer, 1000);
-      }
+      const timer = setInterval(handleTimer, 1000);
     }
   }
 
   //useeffect buyu useeffect
   useEffect(() => {
     const interval = setInterval(pollDOM, 1000);
-
+    setSign(getCookie("sign"));
     return () => {
       clearInterval(interval);
     };
   }, []);
   if (solvedCards === 6) {
-    router.push("/doneSolve?" + displayTime);
+    router.push("/doneSolve?time=" + displayTime);
   }
 
   return (
     <div className="h-[100vh] w-[100vw] flex flex-col items-center justify-center gap-[10px]">
-      <button
-        style={
-          localStorage.getItem("sign")
-            ? { display: "none" }
-            : { display: "flex" }
-        }
-        onClick={() => {
-          router.push("/login");
-        }}
-        className="absolute top-[8px] right-[16px] text-[25px] flex h-[50px] w-[100px] justify-center backdrop-blur-lg rounded-lg bg-[#323232] items-center hover:bg-[#696969] transition-all duration-300"
-      >
-        <p>login</p>
-      </button>
-      <button
-        style={
-          localStorage.getItem("sign")
-            ? { display: "flex" }
-            : { display: "none" }
-        }
-        onClick={() => {
-          router.push("/account");
-        }}
-        className="absolute top-[8px] right-[16px] text-[25px] flex h-[50px] w-[100px] justify-center backdrop-blur-lg rounded-lg bg-[#323232] items-center hover:bg-[#696969] transition-all duration-300"
-      >
-        <p>{localStorage.getItem("sign")}</p>
-      </button>
+      {sign ? (
+        <button
+          onClick={() => {
+            router.push("/account");
+          }}
+          className="absolute top-[8px] right-[16px] text-[25px] flex h-[50px] w-[100px] justify-center backdrop-blur-lg rounded-lg bg-[transparent] items-center hover:bg-[#696969] transition-all duration-300 border-[white] border-2"
+        >
+          {sign}
+        </button>
+      ) : (
+        <button
+          onClick={() => {
+            router.push("/login");
+          }}
+          className="absolute top-[8px] right-[16px] text-[25px] flex h-[50px] w-[100px] justify-center backdrop-blur-lg rounded-lg bg-[transparent] items-center hover:bg-[#696969] transition-all duration-300 border-[white] border-2"
+        >
+          login
+        </button>
+      )}
       <div className="p-[10px] flex flex-col h-[auto] w-[auto]  text-[white] gap-[10px] justify-center items-center backdrop-blur">
         <h2 className="text-[30px]">time: {displayTime}</h2>
-        {mode == "hard" ? (
-          <div className="card_container">
-            {property.map((element, index) => {
-              return (
-                <div
-                  key={index}
-                  className="cards"
-                  style={
-                    element.clicked ? { transform: "rotateY(180deg)" } : {}
-                  }
-                  onClick={() =>
-                    handleCardClick(element.id, element.path, element.solved)
-                  }
-                >
-                  {element.clicked ? (
-                    <Image
-                      width={110}
-                      height={140}
-                      alt={index}
-                      src={element.path}
-                      className="rounded-[10px]"
-                    />
-                  ) : (
-                    <Image
-                      className="rounded-[10px]"
-                      width={110}
-                      height={140}
-                      alt={index}
-                      src="/images/blank.webp"
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="card_container flex justify-center">
-            {property.map((element, index) => {
-              return (
-                <div
-                  key={index}
-                  className="cards"
-                  style={
-                    element.clicked ? { transform: "rotateY(180deg)" } : {}
-                  }
-                  onClick={() => handleCardClick(element.id, element.path)}
-                >
-                  {element.clicked ? (
-                    <Image
-                      width={100}
-                      height={140}
-                      alt={index}
-                      className="rounded-[10px]"
-                      src={element.path}
-                    />
-                  ) : (
-                    <Image
-                      width={100}
-                      height={140}
-                      alt={index}
-                      className="rounded-[10px]"
-                      src="/images/blank.webp"
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
+
+        <div className="card_container">
+          {property.map((element, index) => {
+            return (
+              <div
+                key={index}
+                className="cards"
+                style={element.clicked ? { transform: "rotateY(180deg)" } : {}}
+                onClick={() =>
+                  handleCardClick(element.id, element.path, element.solved)
+                }
+              >
+                {element.clicked ? (
+                  <Image
+                    width={110}
+                    height={140}
+                    draggable={false}
+                    alt={index}
+                    src={element.path}
+                    className="rounded-[10px]"
+                  />
+                ) : (
+                  <Image
+                    className="rounded-[10px]"
+                    width={110}
+                    height={140}
+                    draggable={false}
+                    alt={index}
+                    src="/images/blank.webp"
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+
         <button
           onClick={restart}
           className="border-white border-2 rounded-xl p-[10px] hover:bg-[#3d3d3d] transition-all duration-300"
         >
-          Restart
+          Return main menu
         </button>
       </div>
     </div>

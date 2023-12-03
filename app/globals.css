@@ -112,3 +112,10 @@ body {
   background-color: rgb(94, 94, 94);
   font-size: 19px;
 }
+.idk {
+  scrollbar-width: 0;
+}
+
+.idk::-webkit-scrollbar {
+  display: none;
+}
